@@ -21,7 +21,6 @@ curl -X POST   http://localhost:5000/alert   -H 'Content-Type: application/json'
                 "description": "CPU usage is above 80%",
                 "summary": "High CPU usage detected",
                 "query": "sum by (pod) (up{pod=~\".*\"}) < 1",
-                "Create graph": "yes"
             },
             "start": "2024-12-27T07:00:00",
             "end": "2024-12-24T09:00:00"
