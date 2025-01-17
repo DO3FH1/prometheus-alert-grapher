@@ -21,14 +21,13 @@ def handle_alert():
     alert_data = request.json
     app.logger.info(f"Received alert data: {alert_data}")
     
-    # Проверяем наличие лейбла "Create graph"
+    # Проверяем наличие запроса для промета
     if 'alerts' in alert_data and alert_data['alerts']:
-        create_graph_label = alert_data['alerts'][0].get('labels', {}).get('Create graph')
-        if not create_graph_label:
-            app.logger.info("Alert does not contain 'Create graph' label. Skipping.")
+        metric_name = alert_data['alerts'][0].get('annotations', {}).get('query', 'Unknown Metric')
+        if metric_name == 'Unknown Metric':
+            app.logger.info("Alert does not contain query in annotations. Skipping.")
             return "Alert skipped", 200
 
-        metric_name = alert_data['alerts'][0].get('annotations', {}).get('query', 'Unknown Metric')
         alert_name = alert_data['alerts'][0].get('labels', {}).get('alertname', 'Unknown Alertname')
     else:
         app.logger.info("Invalid alert data. Skipping.")
